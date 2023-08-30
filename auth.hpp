@@ -22,7 +22,7 @@ namespace ares {
 		std::string m_cpu_id;
 
 		std::string m_hash;
-
+	
 		bool acquire_serials();
 	public:
 		hardware_id_ctx();
@@ -30,6 +30,11 @@ namespace ares {
 
 		std::string hash();
 	};
+
+	std::vector<std::uint32_t> encrypt(CryptoPP::RSA::PublicKey public_key_ctx, std::string data);
+	std::string encrypt_text(CryptoPP::RSA::PublicKey public_key_ctx, std::string data);
+	std::string decrypt(CryptoPP::RSA::PrivateKey private_key_ctx, std::vector<std::uint32_t> data);
+	std::string decrypt_text(CryptoPP::RSA::PrivateKey private_key_ctx, std::string data);
 
 	class app_ctx {
 	private:
@@ -65,6 +70,7 @@ namespace ares {
 		std::uint32_t m_key;
 	public:
 		license_ctx(std::string id, ares::app_ctx app, std::string hwid, std::string expiry, std::string lastLogin, bool banned, std::string ip, std::uint32_t duration, std::uint32_t status, std::string created_on);
+		license_ctx();
 
 		~license_ctx();
 
@@ -95,7 +101,7 @@ namespace ares {
 		std::uint32_t m_key;
 	public:
 		secure_image_ctx(std::vector<std::uint32_t> image, std::uint32_t key);
-
+		
 		secure_image_ctx();
 
 		~secure_image_ctx();
@@ -117,7 +123,7 @@ namespace ares {
 
 	public:
 		session_ctx(std::string token, std::vector<std::uint32_t> public_key, std::vector<std::uint32_t> private_key, ares::app_ctx app, std::uint32_t key);
-
+		
 		session_ctx();
 
 		void set_license_ctx(ares::license_ctx license_ctx);
@@ -126,11 +132,11 @@ namespace ares {
 
 		~session_ctx();
 
+		ares::secure_image_ctx module(std::string id);
+
 		ares::license_ctx license_ctx();
 
 		std::string token();
-
-		ares::secure_image_ctx module(std::string id);
 
 		std::string variable(std::string name);
 
@@ -139,5 +145,7 @@ namespace ares {
 		ares::app_ctx app();
 	};
 
-	ares::session_ctx connect(std::vector<std::uint32_t> id);
+	ares::status_e get_app_status(std::vector<std::uint32_t> app_name);
+
+	ares::session_ctx connect(std::vector<std::uint32_t> app_name);
 }
