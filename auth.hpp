@@ -31,11 +31,6 @@ namespace ares {
 		std::string hash();
 	};
 
-	std::vector<std::uint32_t> encrypt(CryptoPP::RSA::PublicKey public_key_ctx, std::string data);
-	std::string encrypt_text(CryptoPP::RSA::PublicKey public_key_ctx, std::string data);
-	std::string decrypt(CryptoPP::RSA::PrivateKey private_key_ctx, std::vector<std::uint32_t> data);
-	std::string decrypt_text(CryptoPP::RSA::PrivateKey private_key_ctx, std::string data);
-
 	class app_ctx {
 	private:
 		std::string m_id;
